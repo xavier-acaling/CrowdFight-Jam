@@ -21,8 +21,10 @@ public class BlockDragHandler : BlockCharacter
     // public float IntroPathSeconds = 1;
     public BlockGoal BlockGoal;
     Rigidbody rb;
+    public BoxCollider BoxCLD;
     void Start()
     {
+        BoxCLD = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         BlockGoal.ListAllBlocks.Add(this);
     }

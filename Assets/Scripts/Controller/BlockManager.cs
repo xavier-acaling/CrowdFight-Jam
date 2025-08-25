@@ -13,6 +13,7 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     public bool IsDragging;
     public BlockDragHandler CurrentDraggingCharacter;
+    private Vector3 dragOffset;
     void Awake()
     {
         cam = Camera.main;
@@ -36,6 +37,10 @@ public class BlockManager : MonoBehaviour
         {
             IsDragging = true;
             CurrentDraggingCharacter = hit.transform.GetComponent<BlockDragHandler>();
+
+            Vector3 worldPoint = hit.point;
+            dragOffset = CurrentDraggingCharacter.transform.position - new Vector3(worldPoint.x, CurrentDraggingCharacter.transform.position.y, worldPoint.z);
+
         }
         if (IsDragging && CurrentDraggingCharacter != null)
         {
@@ -44,22 +49,32 @@ public class BlockManager : MonoBehaviour
             {
                 Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
                 float fixedY = rb.position.y;
-                Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z);
+                Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z)  + dragOffset;
 
                 rb.drag = 0;
                 rb.mass = 0;
                 if (rb != null)
                 {
                     Vector3 direction = (targetPos - rb.position);
+                    float speed = 50f;
+                    rb.velocity = direction * speed;
+                      // If colliding, slide along the surface
+                     Vector3 velocity = direction * speed;
 
-                    float followStrength = 40;
+                    // probe forward; if we’ll hit something, slide along the surface
+                    float rayLength = Mathf.Max(1f, velocity.magnitude * Time.fixedDeltaTime * 15f);
 
-                    rb.velocity = direction * followStrength;
-                   
+                    if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hit2, rayLength, groundGridLayer))
+                    {
+                       
+                        velocity = Vector3.ProjectOnPlane(velocity, hit2.normal);
+                    }
+
+                    rb.velocity = velocity;
                 }
             }
            
-            }
+        }
         if (IsDragging && Input.GetMouseButtonUp(0))
         {
             Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
@@ -199,6 +214,26 @@ public class BlockManager : MonoBehaviour
         return (nearestDistanceNewGrid < currentDistanceOldGrid) 
             ? (nearestCell, nearestDistanceNewGrid) 
             : (currentGrid, currentDistanceOldGrid);
+    }
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying && CurrentDraggingCharacter != null)
+        {
+               BoxCollider box = CurrentDraggingCharacter.GetComponent<BoxCollider>();
+
+                Vector3 worldCenter = box.transform.TransformPoint(box.center);
+                Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, box.transform.lossyScale);
+
+                Gizmos.matrix = Matrix4x4.TRS(worldCenter, box.transform.rotation, Vector3.one);
+
+                // Fill
+                Gizmos.color = new Color(0, 1, 0, 0.15f);
+                Gizmos.DrawCube(Vector3.zero, halfExtents * 2);
+
+                // Borders (stronger)
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2);
+        }
     }
     public bool AllBlockCharactersCanFit(BlockDragHandler blockDragHandler)
     {

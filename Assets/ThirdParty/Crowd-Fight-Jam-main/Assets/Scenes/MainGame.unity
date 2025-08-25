@@ -3182,7 +3182,7 @@ GameObject:
   - component: {fileID: 241413825}
   - component: {fileID: 241413824}
   - component: {fileID: 241413823}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4799,7 +4799,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &336843912
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4819,8 +4819,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02631926, y: 0.0079141185, z: 0.004384531}
-  m_Center: {x: -0.0008738756, y: 0.00007970422, z: 0.000047117173}
+  m_Size: {x: 0.028944205, y: 0.008803251, z: 0.004384531}
+  m_Center: {x: -0.00083396793, y: 0.000027496517, z: 0.000047117177}
 --- !u!23 &336843913
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4904,6 +4904,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1306570290}
+  BoxCLD: {fileID: 0}
 --- !u!1001 &351729245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7016,7 +7017,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &432836092
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7036,8 +7037,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.018004775, y: 0.008491087, z: 0.0043845316}
-  m_Center: {x: -0.004752736, y: -0.0001538232, z: 0.00004711717}
+  m_Size: {x: 0.019807952, y: 0.0092110345, z: 0.0043845316}
+  m_Center: {x: -0.004982494, y: -0.00013408215, z: 0.000047117173}
 --- !u!114 &432836093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7068,6 +7069,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1941622632}
+  BoxCLD: {fileID: 0}
 --- !u!23 &432836094
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16754,7 +16756,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1083583984
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16774,8 +16776,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02631926, y: 0.0079141185, z: 0.004384531}
-  m_Center: {x: -0.0008738756, y: 0.00007970422, z: 0.000047117173}
+  m_Size: {x: 0.028944205, y: 0.008803251, z: 0.004384531}
+  m_Center: {x: -0.00083396793, y: 0.000027496517, z: 0.000047117177}
 --- !u!114 &1083583985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16807,6 +16809,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1626901835}
+  BoxCLD: {fileID: 0}
 --- !u!23 &1083583986
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17223,7 +17226,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1104794830
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17243,8 +17246,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.027515883, y: 0.010020254, z: 0.004384531}
-  m_Center: {x: -0.0009949565, y: 4.800884e-20, z: 0.000047117173}
+  m_Size: {x: 0.028944205, y: 0.008803251, z: 0.004384531}
+  m_Center: {x: -0.00083396793, y: 0.000027496517, z: 0.000047117177}
 --- !u!114 &1104794831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17276,6 +17279,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1626901835}
+  BoxCLD: {fileID: 0}
 --- !u!23 &1104794832
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18594,6 +18598,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1941622632}
+  BoxCLD: {fileID: 0}
 --- !u!54 &1188909907
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18620,7 +18625,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1188909908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18640,8 +18645,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.018004775, y: 0.008491087, z: 0.0043845316}
-  m_Center: {x: -0.004752736, y: -0.0001538232, z: 0.00004711717}
+  m_Size: {x: 0.019807952, y: 0.0092110345, z: 0.0043845316}
+  m_Center: {x: -0.004982494, y: -0.00013408215, z: 0.000047117173}
 --- !u!1001 &1205419096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21109,37 +21114,6 @@ MonoBehaviour:
   TargetCharacter: {fileID: 0}
   RB: {fileID: 0}
   Anim: {fileID: 0}
---- !u!1 &1356884447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1356884448}
-  m_Layer: 0
-  m_Name: gvfd
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1356884448
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356884447}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7057891, y: 1.0927773, z: -7.4713864}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1360139686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24051,6 +24025,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 0}
+  BoxCLD: {fileID: 0}
 --- !u!65 &1560241778
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24119,7 +24094,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1001 &1567496558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24401,7 +24376,7 @@ PrefabInstance:
     - target: {fileID: 763799897560185588, guid: 798157bad7358b04499c9d71cd3c0d9b,
         type: 3}
       propertyPath: m_Name
-      value: Oranges
+      value: Orange
       objectReference: {fileID: 0}
     - target: {fileID: 763799897560185588, guid: 798157bad7358b04499c9d71cd3c0d9b,
         type: 3}
@@ -28085,6 +28060,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 0}
+  BoxCLD: {fileID: 0}
 --- !u!54 &1755783994
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28111,7 +28087,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1755783995
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30676,6 +30652,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 1462120211}
+  BoxCLD: {fileID: 0}
 --- !u!54 &1933424156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -30702,7 +30679,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1933424157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30722,8 +30699,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.027792541, y: 0.010020253, z: 0.0043845316}
-  m_Center: {x: -0.0001459968, y: 0.0000000023841864, z: 0.00004711717}
+  m_Size: {x: 0.029797444, y: 0.009250725, z: 0.0043845316}
+  m_Center: {x: -0.000077900884, y: 0.000076476936, z: 0.00004711717}
 --- !u!1001 &1934000449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32294,6 +32271,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 567116760}
+  BoxCLD: {fileID: 0}
 --- !u!54 &1991556863
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -32320,7 +32298,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &1991556864
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32340,8 +32318,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02631926, y: 0.0079141185, z: 0.004384531}
-  m_Center: {x: -0.0008738756, y: 0.00007970422, z: 0.000047117173}
+  m_Size: {x: 0.028944205, y: 0.008803251, z: 0.004384531}
+  m_Center: {x: -0.00083396793, y: 0.000027496517, z: 0.000047117177}
 --- !u!1 &1996319804
 GameObject:
   m_ObjectHideFlags: 0
@@ -35002,7 +34980,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1 &2094609527
 GameObject:
   m_ObjectHideFlags: 0
@@ -35057,6 +35035,7 @@ MonoBehaviour:
     grid: {fileID: 0}
     distanceOfGrid: 0
   BlockGoal: {fileID: 5995800731597602023}
+  BoxCLD: {fileID: 0}
 --- !u!4 &2094609529
 Transform:
   m_ObjectHideFlags: 0
@@ -35099,7 +35078,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &2094609531
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -35119,8 +35098,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02631926, y: 0.0079141185, z: 0.004384531}
-  m_Center: {x: -0.0008738756, y: 0.00007970422, z: 0.000047117173}
+  m_Size: {x: 0.028944205, y: 0.008803251, z: 0.004384531}
+  m_Center: {x: -0.00083396793, y: 0.000027496517, z: 0.000047117177}
 --- !u!23 &2094609532
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -36385,4 +36364,3 @@ SceneRoots:
   - {fileID: 739243156}
   - {fileID: 1384746220}
   - {fileID: 728963393}
-  - {fileID: 1356884448}
