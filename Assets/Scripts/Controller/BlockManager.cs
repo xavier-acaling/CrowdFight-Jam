@@ -27,7 +27,8 @@ public class BlockManager : MonoBehaviour
     }
     void Start()
     {
-        InitializeAllBlockChildren();  
+        //   InitializeAllBlockChildren();  
+        
     }
     void Update()
     {
@@ -47,31 +48,70 @@ public class BlockManager : MonoBehaviour
             UnattachAllGrids();
             if (Physics.Raycast(ray, out RaycastHit dragHit, 100f, groundGridLayer))
             {
+                // Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
+                // float fixedY = rb.position.y;
+                // Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z)  + dragOffset;
+
+                // rb.drag = 0;
+                // rb.mass = 0;
+                // if (rb != null)
+                // {
+                //     Vector3 direction = (targetPos - rb.position);
+                //     float speed = 50f;
+                //     rb.velocity = direction * speed;
+                //       // If colliding, slide along the surface
+                //      Vector3 velocity = direction * speed;
+
+                //     // probe forward; if we’ll hit something, slide along the surface
+                //     float rayLength = Mathf.Max(1f, velocity.magnitude * Time.fixedDeltaTime * 15f);
+
+                //     if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hit2, rayLength, groundGridLayer))
+                //     {
+
+                //         velocity = Vector3.ProjectOnPlane(velocity, hit2.normal);
+                //     }
+
+                //     rb.velocity = velocity;
+                // }
                 Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
+                if (rb == null) return;
+
                 float fixedY = rb.position.y;
-                Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z)  + dragOffset;
+                Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z) + dragOffset;
 
-                rb.drag = 0;
-                rb.mass = 0;
-                if (rb != null)
+                rb.mass = 0f;
+                rb.drag = 0f;
+                rb.angularDrag = 0f;
+
+                Vector3 direction = targetPos - rb.position;
+                float distance = direction.magnitude;
+                direction.Normalize();
+
+                float speed = 50f;
+                Vector3 velocity = direction * Mathf.Min(speed, distance / Time.fixedDeltaTime);
+
+                float rayLength = Mathf.Max(0.01f, velocity.magnitude * Time.fixedDeltaTime);
+                if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hiT2, rayLength, groundGridLayer))
                 {
-                    Vector3 direction = (targetPos - rb.position);
-                    float speed = 50f;
-                    rb.velocity = direction * speed;
-                      // If colliding, slide along the surface
-                     Vector3 velocity = direction * speed;
-
-                    // probe forward; if we’ll hit something, slide along the surface
-                    float rayLength = Mathf.Max(1f, velocity.magnitude * Time.fixedDeltaTime * 15f);
-
-                    if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hit2, rayLength, groundGridLayer))
+                    if (hiT2.transform != CurrentDraggingCharacter.transform) // ignore self
                     {
-                       
-                        velocity = Vector3.ProjectOnPlane(velocity, hit2.normal);
+                        velocity = Vector3.ProjectOnPlane(velocity, hiT2.normal);
                     }
-
-                    rb.velocity = velocity;
                 }
+                if (CurrentDraggingCharacter.HorizontalVerticalFeature.Activate)
+                {
+                    switch (CurrentDraggingCharacter.HorizontalVerticalFeature.Type)
+                    {
+                        case TypeHV.Horizontal:
+                            velocity.z = 0;
+                        break;
+                        
+                        case TypeHV.Vertical:
+                            velocity.x = 0;
+                        break;
+                    }
+                }
+                rb.velocity = velocity;
             }
            
         }

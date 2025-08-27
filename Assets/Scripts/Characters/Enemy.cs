@@ -8,12 +8,17 @@ public class Enemy : MonoBehaviour
     public BlockCharacter TargetCharacter;
     public Rigidbody RB;
     public Animator Anim;
+    void Awake()
+    {
+        // RB = GetComponent<Rigidbody>();
+        // RB.isKinematic = true;
+    }
     void Start()
     {
         Anim = GetComponent<Animator>();
-        
+   //     RB.isKinematic = false;
     }
-
+   
     // Update is called once per frame
     void Update()
     {

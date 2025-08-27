@@ -10,7 +10,13 @@ public class GridCell : MonoBehaviour
     {
         init();
     }
-
+    void Start()
+    {
+        if (!BlockManager.Instance.AllGridCells.Contains(this))
+        {
+            BlockManager.Instance.AllGridCells.Add(this);
+        }
+    }
     void init()
     {
         Grid = new GridHelper(transform.position.x, transform.position.z);

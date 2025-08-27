@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 public class BlockDragHandler : BlockCharacter
 {
     // Start is called before the first frame update
+    [Header("Feature")]
+    public HVFeature HorizontalVerticalFeature;
     [SerializeField]
     public LayerMask gridLayer;
     public List<ChildBlock> ChildBlocks = new List<ChildBlock>();
@@ -26,24 +28,44 @@ public class BlockDragHandler : BlockCharacter
     {
         BoxCLD = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
+        if (!BlockManager.Instance.AllBlockCharacters.Contains(this))
+        {
+            BlockManager.Instance.AllBlockCharacters.Add(this);
+        }
         BlockGoal.ListAllBlocks.Add(this);
+        (GridCell _cell, float _distance) nearestGridCell = BlockManager.Instance.CheckNearestGrid(
+        new GridHelper(transform.position.x, transform.position.z),
+        null);
+        AttachOnGrid(new BlockGridInfo(
+            nearestGridCell._cell,
+            nearestGridCell._distance
+        ));
+        featureInit();
+        
+    }
+    void featureInit()
+    {
+        if (HorizontalVerticalFeature.Activate)
+        {
+            HorizontalVerticalFeature.HVGO.SetActive(true);
+        }
     }
     void Update()
     {
         if (!BlockManager.Instance.IsDragging)
         {
-        if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null )
-        {
-            var grid = MainGridCell.GetGrid();
-            if (grid != null)
+            if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null )
             {
-                Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
-                if (transform.position != snappedPos)
+                var grid = MainGridCell.GetGrid();
+                if (grid != null)
                 {
-                    SnapPosition(grid);
+                    Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
+                    if (transform.position != snappedPos)
+                    {
+                        SnapPosition(grid);
+                    }
                 }
             }
-        }
         }  
     }
     public override void AttachOnGrid(BlockGridInfo gridCell)
@@ -117,6 +139,10 @@ public class BlockDragHandler : BlockCharacter
     public void InitializeMultiply()
     {
         GetComponent<BoxCollider>().enabled = false;
+        if (HorizontalVerticalFeature.Activate)
+        {
+            HorizontalVerticalFeature.HVGO.SetActive(false);
+        }
         MainGridCell.GetGrid().UnattachCurrentBlockCharacter();
         foreach (var item in ChildBlocks)
         {
@@ -159,6 +185,7 @@ public class BlockDragHandler : BlockCharacter
             newChild.transform.position = BlockGoal.SpawnPosition.position;
             newChild.transform.localScale = new Vector3(0.519999981f, 0.519999981f, 0.519999981f);
             newChild.GetComponent<ChildBlock>().Parent = this;
+            newChild.transform.SetParent(BattleController.Instance._LevelC.CurrentLevelObject.transform);
             BattleController.Instance.FindEnemy(newChild.GetComponent<ChildBlock>());
             yield return new WaitForSeconds(0.25f);
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 public class BattleController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,6 +16,7 @@ public class BattleController : MonoBehaviour
     public Text RestartUI;
     public GameObject GameOverUI;
     public int AllEnemiesCount;
+    public LevelController _LevelC;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,29 +24,35 @@ public class BattleController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        AllEnemiesCount = AllEnemies.Count;
+     //  AllEnemiesCount = AllEnemies.Count;
         Instance = this;
-        UpdateGame();
+      //  UpdateGame();
     }
+    void Start()
+    {
+
+    }
+    
     public void UpdateGame()
-    { 
+    {
         EnemyCountUI.text = AllEnemiesCount.ToString();
         if (AllEnemiesCount == 0)
         {
             GameOverUI.SetActive(true);
-            StartCoroutine(Restart());
+            StartCoroutine(Next());
         }
     }
-    public IEnumerator Restart()
+    public IEnumerator Next()
     {
-        int count = 6;
+        int count = 3;
         while (count > 0)
         {
             count--;
-            RestartUI.text = $"RESTARTS IN {count}";
+            RestartUI.text = $"NEXT LEVEL IN {count}";
             yield return new WaitForSeconds(1);
         }
-        SceneManager.LoadScene(0);
+        BattleController.Instance._LevelC.NextLevel();
+        GameOverUI.SetActive(false);
     } 
     public void FindEnemy(ChildBlock child)
     {
@@ -77,7 +85,10 @@ public class BattleController : MonoBehaviour
         }
         while (true)
         {
-
+            if (enemy == null && child == null)
+            {
+                yield break;
+            }
             float distance = Vector3.Distance(new Vector3(enemy.transform.position.x, 0, enemy.transform.position.z),
                                               new Vector3(child.transform.position.x, 0, child.transform.position.z));
 
@@ -120,6 +131,7 @@ public class BattleController : MonoBehaviour
                 UpdateGame();
 
                 GameObject fx = Instantiate(PrefabSplash, new Vector3(enemy.transform.position.x, PrefabSplash.transform.position.y, enemy.transform.position.z), Quaternion.identity);
+    
                 Destroy(enemy.gameObject);
                 Destroy(child.gameObject);
                 yield break;
@@ -127,10 +139,6 @@ public class BattleController : MonoBehaviour
             yield return null;
         }
 
-    }
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
