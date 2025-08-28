@@ -188,6 +188,10 @@ MonoBehaviour:
   MainGridCell:
     grid: {fileID: 0}
     distanceOfGrid: 0
+  HorizontalVerticalFeature:
+    Activate: 0
+    HVGO: {fileID: 0}
+    Type: 0
   gridLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -212,7 +216,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4648607688865276226}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 93e988631129a427dbd04781dc6d94f2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

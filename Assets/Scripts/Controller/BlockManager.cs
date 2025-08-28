@@ -32,6 +32,10 @@ public class BlockManager : MonoBehaviour
     }
     void Update()
     {
+        if (IsDragging && CurrentDraggingCharacter == null)
+        {
+            IsDragging = false;
+        }
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, blockCharacterLayer) && Input.GetMouseButtonDown(0)
          && !IsDragging)
@@ -43,36 +47,14 @@ public class BlockManager : MonoBehaviour
             dragOffset = CurrentDraggingCharacter.transform.position - new Vector3(worldPoint.x, CurrentDraggingCharacter.transform.position.y, worldPoint.z);
 
         }
+        
         if (IsDragging && CurrentDraggingCharacter != null)
         {
             UnattachAllGrids();
             if (Physics.Raycast(ray, out RaycastHit dragHit, 100f, groundGridLayer))
             {
-                // Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
-                // float fixedY = rb.position.y;
-                // Vector3 targetPos = new Vector3(dragHit.point.x, fixedY, dragHit.point.z)  + dragOffset;
 
-                // rb.drag = 0;
-                // rb.mass = 0;
-                // if (rb != null)
-                // {
-                //     Vector3 direction = (targetPos - rb.position);
-                //     float speed = 50f;
-                //     rb.velocity = direction * speed;
-                //       // If colliding, slide along the surface
-                //      Vector3 velocity = direction * speed;
 
-                //     // probe forward; if we’ll hit something, slide along the surface
-                //     float rayLength = Mathf.Max(1f, velocity.magnitude * Time.fixedDeltaTime * 15f);
-
-                //     if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hit2, rayLength, groundGridLayer))
-                //     {
-
-                //         velocity = Vector3.ProjectOnPlane(velocity, hit2.normal);
-                //     }
-
-                //     rb.velocity = velocity;
-                // }
                 Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
                 if (rb == null) return;
 
@@ -88,32 +70,64 @@ public class BlockManager : MonoBehaviour
                 direction.Normalize();
 
                 float speed = 50f;
-                Vector3 velocity = direction * Mathf.Min(speed, distance / Time.fixedDeltaTime);
+                Vector3 desiredVelocity = direction * Mathf.Min(speed, distance / Time.fixedDeltaTime);
 
-                float rayLength = Mathf.Max(0.01f, velocity.magnitude * Time.fixedDeltaTime);
-                if (Physics.Raycast(rb.position, velocity.normalized, out RaycastHit hiT2, rayLength, groundGridLayer))
+                // Short raycast for collisions
+                float rayLength = Mathf.Max(0.01f, desiredVelocity.magnitude * Time.fixedDeltaTime);
+                if (Physics.Raycast(rb.position, desiredVelocity.normalized, out RaycastHit hit2, rayLength, groundGridLayer))
                 {
-                    if (hiT2.transform != CurrentDraggingCharacter.transform) // ignore self
+                    if (hit2.transform != CurrentDraggingCharacter.transform) // ignore self
                     {
-                        velocity = Vector3.ProjectOnPlane(velocity, hiT2.normal);
+                        desiredVelocity = Vector3.ProjectOnPlane(desiredVelocity, hit2.normal);
                     }
                 }
+
+
+                Vector3 velocity = Vector3.Lerp(rb.velocity, desiredVelocity, 0.05f);
+
+                if (distance < 0.25f)
+                {
+                    velocity = Vector3.Lerp(velocity, Vector3.zero, 1);
+                }
+
+                if (velocity.magnitude < 3f && distance > 0.3f)
+                {
+                    velocity = velocity.normalized * 3f;
+                }
+
+
+                float probeDist = 1f; 
+                Vector3 probePos = rb.position + velocity.normalized * probeDist;
+
+                if (Physics.Raycast(probePos + Vector3.up * 2f, Vector3.down, out RaycastHit stepHit, 5f, groundGridLayer))
+                {
+                    float heightDiff = rb.position.y - stepHit.point.y;
+
+                    if (heightDiff > 0.1f && heightDiff < 5f)
+                    {
+                        velocity = velocity.normalized * velocity.magnitude;
+                    }
+                }
+
+
+                rb.velocity = velocity;
+
                 if (CurrentDraggingCharacter.HorizontalVerticalFeature.Activate)
                 {
                     switch (CurrentDraggingCharacter.HorizontalVerticalFeature.Type)
                     {
                         case TypeHV.Horizontal:
-                            velocity.z = 0;
-                        break;
-                        
+                            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+                            break;
                         case TypeHV.Vertical:
-                            velocity.x = 0;
-                        break;
+                            rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                            break;
                     }
                 }
-                rb.velocity = velocity;
+                
+                
             }
-           
+
         }
         if (IsDragging && Input.GetMouseButtonUp(0))
         {
@@ -138,8 +152,6 @@ public class BlockManager : MonoBehaviour
 
                 GridCell newGrid = nearestGridCell._cell;
                 CurrentDraggingCharacter.LastBlockGridInfo = CurrentDraggingCharacter.MainGridCell;
-                //UnattachAllGrids();
-                //CurrentDraggingCharacter.SnapPosition(newGrid);
 
                 bool childSameGridCellOrDistanceIssue = false;
                 if (AllBlockCharactersCanFit(CurrentDraggingCharacter) 
@@ -212,7 +224,7 @@ public class BlockManager : MonoBehaviour
                 (GridCell _cell, float _distance) nearestGridCell = CheckNearestGrid(new GridHelper(child.transform.position.x,
                                                                                             child.transform.position.z),
                                                                                             child.MainGridCell.GetGrid());
-                if (nearestGridCell._distance >= 0.90)
+                if (nearestGridCell._distance >= 2f)
                 {
                     return true;
                 }
@@ -251,7 +263,7 @@ public class BlockManager : MonoBehaviour
         Vector3 currentPos = new Vector3(currentGrid.Grid.GetGridX(), 0, currentGrid.Grid.GetGridZ());
         float currentDistanceOldGrid = Vector3.Distance(currentPos, targetPos);
 
-        return (nearestDistanceNewGrid < currentDistanceOldGrid) 
+        return (nearestDistanceNewGrid + 0.35f < currentDistanceOldGrid) 
             ? (nearestCell, nearestDistanceNewGrid) 
             : (currentGrid, currentDistanceOldGrid);
     }
