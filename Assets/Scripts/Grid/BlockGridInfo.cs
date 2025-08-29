@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
-public struct BlockGridInfo
+public class BlockGridInfo
 {
     [SerializeField]
-    private GridCell grid;
+    public GridCell grid;
     [SerializeField]
     private float distanceOfGrid;
     public BlockGridInfo(GridCell gridCell, float distance)

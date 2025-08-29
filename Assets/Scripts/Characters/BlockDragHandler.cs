@@ -53,25 +53,30 @@ public class BlockDragHandler : BlockCharacter
     }
     void Update()
     {
-        if (!BlockManager.Instance.IsDragging && !Multiply)
-        {
-            if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null)
-            {
-                var grid = MainGridCell.GetGrid();
-                if (grid != null)
-                {
-                    Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
-                    float snapThreshold = 0.1f;
-                    if (Vector3.Distance(transform.position, snappedPos) > snapThreshold)
-                    {
-                        SnapPosition(grid);
-                    }
-                }
-            }
-        }  
+        Debug.Log("UnattachChildren");
+        // ChildBlock childBlock =  ChildBlocks[0].GetComponent<ChildBlock>();
+        // childBlock.MainGridCell.GetGrid().OccupiedCharacter = null;
+       
+        
+        // if (!BlockManager.Instance.IsDragging && !Multiply)
+        // {
+        //     if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null)
+        //     {
+        //         var grid = MainGridCell.GetGrid();
+        //         if (grid != null)
+        //         {
+        //             Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
+        //             float snapThreshold = 0.1f;
+        //             if (Vector3.Distance(transform.position, snappedPos) > snapThreshold)
+        //             {
+        //                 SnapPosition(grid);
+        //             }
+        //         }
+        //     }
+        // }  
         if (Multiply)
         {
-         
+
             foreach (var child in ChildBlocks)
             {
                 if (child.MainGridCell.GetGrid() != null)
@@ -83,23 +88,33 @@ public class BlockDragHandler : BlockCharacter
     }
     public override void AttachOnGrid(BlockGridInfo gridCell)
     {
-        try
-        {
-            MainGridCell.SetGrid(gridCell.GetGrid());
-            MainGridCell.SetDistanceOfGrid(gridCell.GetDistanceOfGrid());
-
-            gridCell.GetGrid().AttachBlockCharacter(this);
-            SnapPosition(gridCell.GetGrid());
-            ChildrenAttachOnGrid();
-            IsChildrenOnTargetGrid();
-        }
-        catch (System.Exception)
-        {
-        }
+       
+        MainGridCell.SetGrid(gridCell.GetGrid());
+        MainGridCell.SetDistanceOfGrid(gridCell.GetDistanceOfGrid());
+    
+        gridCell.GetGrid().AttachBlockCharacter(this);
+        SnapPosition(gridCell.GetGrid());
+        ChildrenAttachOnGrid();
+        IsChildrenOnTargetGrid();
+    
 
 
     }
-    
+    public void UnattachChildren()
+    {
+        foreach (var item in ChildBlocks)
+        {
+            if (item != null)
+            {
+                if (item.MainGridCell.GetGrid() != null && item.MainGridCell.GetGrid() != null)
+                {
+                    item.MainGridCell.GetGrid().UnattachCurrentBlockCharacter();
+                    Debug.Log("UnattachChildren");
+                }
+
+            }
+        }
+    }
     public void ChildrenAttachOnGrid()
     {
         foreach (var item in ChildBlocks)

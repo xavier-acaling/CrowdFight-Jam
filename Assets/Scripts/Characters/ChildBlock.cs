@@ -33,12 +33,12 @@ public class ChildBlock : BlockCharacter
     }
     void Update()
     {
-        if (MainGridCell.GetGrid() != null)
-        {
-            if (MainGridCell.GetGrid().OccupiedCharacter != this)
-            {
-                MainGridCell.GetGrid().AttachBlockCharacter(this);
-            }
-        }  
+        // if (MainGridCell.GetGrid() != null)
+        // {
+        //     if (MainGridCell.GetGrid().OccupiedCharacter != this)
+        //     {
+        //         MainGridCell.GetGrid().AttachBlockCharacter(this);
+        //     }
+        // }  
     }
 }

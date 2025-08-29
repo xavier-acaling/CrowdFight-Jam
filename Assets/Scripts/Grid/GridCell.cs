@@ -23,6 +23,7 @@ public class GridCell : MonoBehaviour
     }
     public void AttachBlockCharacter(BlockCharacter blockCharacter)
     {
+        Debug.Log($"AttachBlockCharacter ");
         if (OccupiedCharacter == null)
         {
             OccupiedCharacter = blockCharacter;
@@ -33,6 +34,7 @@ public class GridCell : MonoBehaviour
         if (OccupiedCharacter != null)
         {
             OccupiedCharacter = null;
+            Debug.Log($"OccupiedCharacter null {OccupiedCharacter == null}");
         }
     }
 }

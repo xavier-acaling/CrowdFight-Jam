@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class BlockManager : MonoBehaviour
@@ -50,11 +51,10 @@ public class BlockManager : MonoBehaviour
         
         if (IsDragging && CurrentDraggingCharacter != null)
         {
-            UnattachAllGrids();
             if (Physics.Raycast(ray, out RaycastHit dragHit, 100f, groundGridLayer))
             {
 
-
+                UnattachAllGrids();
                 Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
                 if (rb == null) return;
 
@@ -133,11 +133,11 @@ public class BlockManager : MonoBehaviour
         {
             Rigidbody rb = CurrentDraggingCharacter.GetComponent<Rigidbody>();
             
-
+            
             rb.velocity = Vector3.zero;
             (GridCell _cell, float _distance) nearestGridCell = CheckNearestGrid(new GridHelper(CurrentDraggingCharacter.transform.position.x, CurrentDraggingCharacter.transform.position.z),
                                                             CurrentDraggingCharacter.MainGridCell.GetGrid());
-
+            Debug.Log($"nearestGridCell {nearestGridCell._cell.gameObject.name}");
             bool sameParentGridCell = false;
             if (nearestGridCell._cell.OccupiedCharacter != null)
             {
@@ -161,28 +161,43 @@ public class BlockManager : MonoBehaviour
                                                                     CurrentDraggingCharacter.transform.position.z),
                                                                     CurrentDraggingCharacter.MainGridCell.GetGrid());
 
-                    CurrentDraggingCharacter.AttachOnGrid(new BlockGridInfo
-                    (
-                        nearestGridCell._cell,
-                        nearestGridCell._distance
-                    ) );
+                    // CurrentDraggingCharacter.AttachOnGrid(new BlockGridInfo
+                    // (
+                    //     nearestGridCell._cell,
+                    //     nearestGridCell._distance
+                    // ) );
 
-                    // foreach (var child in CurrentDraggingCharacter.ChildBlocks)
-                    // {
-                    //     if (IsSameGridOrDistanceIssue(CurrentDraggingCharacter, child))
-                    //     {
-                    //         childSameGridCellOrDistanceIssue = true;
-                    //         break;
-                    //     }
-                    // }
+                    foreach (var child in CurrentDraggingCharacter.ChildBlocks)
+                    {
+                        //   UnattachAllGrids();
+                        if (IsSameGridOrDistanceIssue(CurrentDraggingCharacter, child))
+                        {
+                            childSameGridCellOrDistanceIssue = true;
+                            break;
+                        }
+                    }
+                   // Debug.Log($"childSameGridCellOrDistanceIssue {childSameGridCellOrDistanceIssue} ");
                     
                     if (childSameGridCellOrDistanceIssue)
                     {
+                        Debug.Log("childSameGridCellOrDistanceIssue 1");
                         CurrentDraggingCharacter.AttachOnGrid(CurrentDraggingCharacter.LastBlockGridInfo);
+                    }
+                    else
+                    {
+                        Debug.Log("childSameGridCellOrDistanceIssue 2");
+                        CurrentDraggingCharacter.AttachOnGrid(new BlockGridInfo
+                        (
+                            nearestGridCell._cell,
+                            nearestGridCell._distance
+                        ) );
+                        
+                        
                     }
                 }
                 else
                 {
+                    Debug.Log("childSameGridCellOrDistanceIssue 3");
                     CurrentDraggingCharacter.AttachOnGrid(CurrentDraggingCharacter.LastBlockGridInfo);
 
                 }
@@ -201,12 +216,15 @@ public class BlockManager : MonoBehaviour
         if (CurrentDraggingCharacter.MainGridCell.GetGrid() != null)
         {
             CurrentDraggingCharacter.MainGridCell.GetGrid().UnattachCurrentBlockCharacter();
+            CurrentDraggingCharacter.MainGridCell.grid = null;
         }
         foreach (var child in CurrentDraggingCharacter.ChildBlocks)
         {
             if (child.MainGridCell.GetGrid() != null)
             {
                 child.MainGridCell.GetGrid().UnattachCurrentBlockCharacter();
+                child.MainGridCell.GetGrid().OccupiedCharacter = null;
+                child.MainGridCell.grid = null;
             }
         }
     }
@@ -214,8 +232,9 @@ public class BlockManager : MonoBehaviour
     {
         foreach (var child in parentCharacter.GetComponent<BlockDragHandler>().ChildBlocks)
         {
-            if (child != childCharacter && childCharacter.MainGridCell.GetGrid() == child.MainGridCell.GetGrid())
+            if (child != childCharacter && childCharacter.MainGridCell.GetGrid() != null && childCharacter.MainGridCell.GetGrid() == child.MainGridCell.GetGrid())
             {
+                Debug.Log($"childCharacter {gameObject.name},childCharacter.MainGridCell {childCharacter.MainGridCell.GetGrid().gameObject.name}");
                 return true;
             }
 
@@ -226,6 +245,7 @@ public class BlockManager : MonoBehaviour
                                                                                             child.MainGridCell.GetGrid());
                 if (nearestGridCell._distance >= 2f)
                 {
+                    Debug.Log("issue same 2");
                     return true;
                 }
             }
@@ -235,38 +255,65 @@ public class BlockManager : MonoBehaviour
     public (GridCell _cell, float _distance) CheckNearestGrid(GridHelper gridHelper, GridCell currentGrid)
     {
 
+        // Vector3 targetPos = new Vector3(gridHelper.GetGridX(), 0, gridHelper.GetGridZ());
+
+        // GridCell nearestCell = null;
+        // float nearestDistanceNewGrid = float.MaxValue;
+
+        // foreach (var cell in AllGridCells)
+        // {
+        //     if (cell == currentGrid)
+        //         continue;
+
+        //     Vector3 cellPos = new Vector3(cell.Grid.GetGridX(), 0, cell.Grid.GetGridZ());
+        //     float distance = Vector3.Distance(cellPos, targetPos); // world distance
+
+        //     if (distance < nearestDistanceNewGrid)
+        //     {
+        //         nearestDistanceNewGrid = distance;
+        //         nearestCell = cell;
+        //     }
+        // }
+
+        // // If no current grid, just return the closest one
+        // if (currentGrid == null)
+        //     return (nearestCell, nearestDistanceNewGrid);
+
+        // // Otherwise, compare to current grid
+        // Vector3 currentPos = new Vector3(currentGrid.Grid.GetGridX(), 0, currentGrid.Grid.GetGridZ());
+        // float currentDistanceOldGrid = Vector3.Distance(currentPos, targetPos);
+
+        // return (nearestCell, nearestDistanceNewGrid);
+        // // return (nearestDistanceNewGrid + 0.35f < currentDistanceOldGrid) 
+        // //     ? (nearestCell, nearestDistanceNewGrid) 
+        // //     : (currentGrid, currentDistanceOldGrid);
         Vector3 targetPos = new Vector3(gridHelper.GetGridX(), 0, gridHelper.GetGridZ());
 
         GridCell nearestCell = null;
-        float nearestDistanceNewGrid = float.MaxValue;
+        float nearestDistance = float.MaxValue;
 
         foreach (var cell in AllGridCells)
         {
-            if (cell == currentGrid)
-                continue;
+            // optional: skip current grid if you don’t want to "snap back"
+            if (currentGrid != null)
+            {
+                if (cell == currentGrid)
+                    continue;
+            }
+            
 
             Vector3 cellPos = new Vector3(cell.Grid.GetGridX(), 0, cell.Grid.GetGridZ());
-            float distance = Vector3.Distance(cellPos, targetPos); // world distance
+            float distance = Vector3.Distance(cellPos, targetPos);
 
-            if (distance < nearestDistanceNewGrid)
+            if (distance < nearestDistance)
             {
-                nearestDistanceNewGrid = distance;
+                nearestDistance = distance;
                 nearestCell = cell;
             }
         }
 
-        // If no current grid, just return the closest one
-        if (currentGrid == null)
-            return (nearestCell, nearestDistanceNewGrid);
-
-        // Otherwise, compare to current grid
-        Vector3 currentPos = new Vector3(currentGrid.Grid.GetGridX(), 0, currentGrid.Grid.GetGridZ());
-        float currentDistanceOldGrid = Vector3.Distance(currentPos, targetPos);
-
-        return (nearestCell, nearestDistanceNewGrid);
-        // return (nearestDistanceNewGrid + 0.35f < currentDistanceOldGrid) 
-        //     ? (nearestCell, nearestDistanceNewGrid) 
-        //     : (currentGrid, currentDistanceOldGrid);
+        // Always snap to nearest (no condition check)
+        return (nearestCell, nearestDistance);
     }
     private void OnDrawGizmos()
     {
