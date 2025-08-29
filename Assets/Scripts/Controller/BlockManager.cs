@@ -167,14 +167,14 @@ public class BlockManager : MonoBehaviour
                         nearestGridCell._distance
                     ) );
 
-                    foreach (var child in CurrentDraggingCharacter.ChildBlocks)
-                    {
-                        if (IsSameGridOrDistanceIssue(CurrentDraggingCharacter, child))
-                        {
-                            childSameGridCellOrDistanceIssue = true;
-                            break;
-                        }
-                    }
+                    // foreach (var child in CurrentDraggingCharacter.ChildBlocks)
+                    // {
+                    //     if (IsSameGridOrDistanceIssue(CurrentDraggingCharacter, child))
+                    //     {
+                    //         childSameGridCellOrDistanceIssue = true;
+                    //         break;
+                    //     }
+                    // }
                     
                     if (childSameGridCellOrDistanceIssue)
                     {
@@ -234,7 +234,7 @@ public class BlockManager : MonoBehaviour
     }
     public (GridCell _cell, float _distance) CheckNearestGrid(GridHelper gridHelper, GridCell currentGrid)
     {
-      
+
         Vector3 targetPos = new Vector3(gridHelper.GetGridX(), 0, gridHelper.GetGridZ());
 
         GridCell nearestCell = null;
@@ -263,9 +263,10 @@ public class BlockManager : MonoBehaviour
         Vector3 currentPos = new Vector3(currentGrid.Grid.GetGridX(), 0, currentGrid.Grid.GetGridZ());
         float currentDistanceOldGrid = Vector3.Distance(currentPos, targetPos);
 
-        return (nearestDistanceNewGrid + 0.35f < currentDistanceOldGrid) 
-            ? (nearestCell, nearestDistanceNewGrid) 
-            : (currentGrid, currentDistanceOldGrid);
+        return (nearestCell, nearestDistanceNewGrid);
+        // return (nearestDistanceNewGrid + 0.35f < currentDistanceOldGrid) 
+        //     ? (nearestCell, nearestDistanceNewGrid) 
+        //     : (currentGrid, currentDistanceOldGrid);
     }
     private void OnDrawGizmos()
     {
