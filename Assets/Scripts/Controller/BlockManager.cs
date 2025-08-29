@@ -29,7 +29,7 @@ public class BlockManager : MonoBehaviour
     void Start()
     {
         //   InitializeAllBlockChildren();  
-        
+        Application.targetFrameRate = 60;
     }
     void Update()
     {
