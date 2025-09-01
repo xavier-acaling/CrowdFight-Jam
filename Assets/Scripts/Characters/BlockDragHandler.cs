@@ -53,27 +53,28 @@ public class BlockDragHandler : BlockCharacter
     }
     void Update()
     {
-        Debug.Log("UnattachChildren");
         // ChildBlock childBlock =  ChildBlocks[0].GetComponent<ChildBlock>();
         // childBlock.MainGridCell.GetGrid().OccupiedCharacter = null;
        
         
-        // if (!BlockManager.Instance.IsDragging && !Multiply)
-        // {
-        //     if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null)
-        //     {
-        //         var grid = MainGridCell.GetGrid();
-        //         if (grid != null)
-        //         {
-        //             Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
-        //             float snapThreshold = 0.1f;
-        //             if (Vector3.Distance(transform.position, snappedPos) > snapThreshold)
-        //             {
-        //                 SnapPosition(grid);
-        //             }
-        //         }
-        //     }
-        // }  
+        if (!BlockManager.Instance.IsDragging && !Multiply)
+        {
+            IsChildrenOnTargetGrid();
+            if (MainGridCell.GetGrid() != null && MainGridCell.GetGrid().Grid != null)
+            {
+                var grid = MainGridCell.GetGrid();
+                if (grid != null)
+                {
+                    Vector3 snappedPos = new Vector3(grid.Grid.GetGridX(), transform.position.y, grid.Grid.GetGridZ());
+                    float snapThreshold = 0.1f;
+                    if (Vector3.Distance(transform.position, snappedPos) > snapThreshold)
+                    {
+                      //  AttachOnGrid();
+                      SnapPosition(grid);
+                    }
+                }
+            }
+        }  
         if (Multiply)
         {
 
@@ -139,6 +140,8 @@ public class BlockDragHandler : BlockCharacter
     }
     public void IsChildrenOnTargetGrid()
     {
+        if (Multiply)
+            return;
         foreach (var child in ChildWithTargets)
         {
             if (child.TargetGridCellSecond != null)
@@ -167,6 +170,8 @@ public class BlockDragHandler : BlockCharacter
     }
     public void InitializeMultiply()
     {
+        rb.isKinematic = true;   
+        rb.constraints = RigidbodyConstraints.FreezeAll;
         Multiply = true;
         GetComponent<BoxCollider>().enabled = false;
         if (HorizontalVerticalFeature.Activate)

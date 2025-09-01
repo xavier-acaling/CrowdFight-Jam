@@ -94,7 +94,7 @@ public class BattleController : MonoBehaviour
 
             Vector3 midpoint = (enemy.transform.position + child.transform.position) / 2f;
 
-            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, midpoint, 2f * Time.deltaTime);
+          //  enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, midpoint, 2f * Time.deltaTime);
             if (childCompletePath)
             {
                 child.transform.position = Vector3.MoveTowards(child.transform.position, midpoint, 2f * Time.deltaTime);
