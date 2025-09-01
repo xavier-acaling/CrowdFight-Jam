@@ -100,18 +100,17 @@ public class BattleController : MonoBehaviour
                 child.transform.position = Vector3.MoveTowards(child.transform.position, midpoint, 2f * Time.deltaTime);
                 
             }
-
-            Vector3 enemyLookDir = child.transform.position - enemy.transform.position;
-            enemyLookDir.y = 0; 
-            if (enemyLookDir != Vector3.zero)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(enemyLookDir);
-                enemy.transform.rotation = Quaternion.Slerp(
-                    enemy.transform.rotation,
-                    targetRot,
-                    Time.deltaTime * 5f 
-                );
-            }
+            //Vector3 enemyLookDir = child.transform.position - enemy.transform.position;
+            //  enemyLookDir.y = 0; 
+            // if (enemyLookDir != Vector3.zero)
+            // {
+            //     Quaternion targetRot = Quaternion.LookRotation(enemyLookDir);
+            //     enemy.transform.rotation = Quaternion.Slerp(
+            //         enemy.transform.rotation,
+            //         targetRot,
+            //         Time.deltaTime * 5f
+            //     );
+            // }
 
             Vector3 childLookDir = enemy.transform.position - child.transform.position;
             childLookDir.y = 0;
