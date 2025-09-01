@@ -16,6 +16,7 @@ MonoBehaviour:
     type: 3}
   spacing: 1.04
   radius: 9.3
+  scale: 10
   formation: 5
   PositionOffset: {x: 1.15, y: 0}
   EnemyCount: 16

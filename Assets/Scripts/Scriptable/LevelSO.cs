@@ -10,6 +10,7 @@ public class LevelSO : ScriptableObject
     [Header("Enemy Formataion")]
     public float spacing = 2f;    
     public float radius = 10f; 
+    public float scale = 10f;
     public FormationType formation = FormationType.Square;
     public Vector2 PositionOffset;
     public int EnemyCount = 20; 

@@ -81,16 +81,39 @@ public class BattleController : MonoBehaviour
     } 
     public void FindEnemy(ChildBlock child)
     {
-        
-        Enemy enemy = AllEnemies.FirstOrDefault(w => w.TargetCharacter == null);
-        if (enemy != null)
-        {
-            enemy.TargetCharacter = child;
-            child.TargetEnemy = enemy;
-            AllEnemies.Remove(enemy);
-            StartCoroutine(battleStart(enemy, child));
+        Enemy nearestEnemy = null;
+        float nearestDistance = Mathf.Infinity;
 
+        foreach (var enemy in AllEnemies)
+        {
+            if (enemy.TargetCharacter != null)
+                continue; // skip enemies already assigned
+
+            float distance = Vector3.Distance(child.transform.position, enemy.transform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
         }
+
+        if (nearestEnemy != null)
+        {
+            nearestEnemy.TargetCharacter = child;
+            child.TargetEnemy = nearestEnemy;
+            AllEnemies.Remove(nearestEnemy);
+            StartCoroutine(battleStart(nearestEnemy, child));
+        }
+        // Enemy enemy = AllEnemies.FirstOrDefault(w => w.TargetCharacter == null);
+        // if (enemy != null)
+        // {
+        //     enemy.TargetCharacter = child;
+        //     child.TargetEnemy = enemy;
+        //     AllEnemies.Remove(enemy);
+        //     StartCoroutine(battleStart(enemy, child));
+
+        // }
     }
     IEnumerator battleStart(Enemy enemy,ChildBlock child)
     {
