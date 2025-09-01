@@ -31167,7 +31167,12 @@ PrefabInstance:
         type: 3}
       propertyPath: TargetGridCell
       value: 
-      objectReference: {fileID: 1723318535101687135}
+      objectReference: {fileID: 8475351098607277451}
+    - target: {fileID: 2686843782747062960, guid: 20a6e61eb25cdb5449a0dd0d89bda29a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 2925196390000855279, guid: 20a6e61eb25cdb5449a0dd0d89bda29a,
         type: 3}
       propertyPath: m_Size.x
@@ -31202,7 +31207,7 @@ PrefabInstance:
         type: 3}
       propertyPath: TargetGridCell
       value: 
-      objectReference: {fileID: 3292968969945431696}
+      objectReference: {fileID: 4932461101791439976}
     - target: {fileID: 7684903678129462508, guid: 20a6e61eb25cdb5449a0dd0d89bda29a,
         type: 3}
       propertyPath: Mesh
