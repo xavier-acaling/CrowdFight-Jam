@@ -6,6 +6,29 @@ using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+public enum FormationType
+{
+    Square,
+    Rectangle,
+    Circle,
+    Ellipse,
+    Triangle,
+    Diamond,
+    Hexagon,
+    Line,
+    Cross,
+    Heart,
+    Star,
+    Spiral,
+    VShape,
+    UShape,
+    Arrow,
+    Wave,
+    Infinity,
+    Pentagon,
+    Octagon,
+    SnakeLine
+}
 public class BattleController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -17,6 +40,8 @@ public class BattleController : MonoBehaviour
     public GameObject GameOverUI;
     public int AllEnemiesCount;
     public LevelController _LevelC;
+    public bool GameStarted;
+    public GameObject EnemyPrefab;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -56,6 +81,7 @@ public class BattleController : MonoBehaviour
     } 
     public void FindEnemy(ChildBlock child)
     {
+        
         Enemy enemy = AllEnemies.FirstOrDefault(w => w.TargetCharacter == null);
         if (enemy != null)
         {
@@ -68,7 +94,7 @@ public class BattleController : MonoBehaviour
     }
     IEnumerator battleStart(Enemy enemy,ChildBlock child)
     {
-        enemy.Anim.SetBool("run",true);
+      //  enemy.Anim.SetBool("run",true);
         child.Anim.SetBool("run",true);
         bool childCompletePath = false;
 

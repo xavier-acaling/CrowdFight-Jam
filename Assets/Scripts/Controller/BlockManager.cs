@@ -41,6 +41,10 @@ public class BlockManager : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, blockCharacterLayer) && Input.GetMouseButtonDown(0)
          && !IsDragging)
         {
+            if (!BattleController.Instance.GameStarted)
+            {
+                BattleController.Instance.GameStarted = true;
+            }
             IsDragging = true;
             CurrentDraggingCharacter = hit.transform.GetComponent<BlockDragHandler>();
 

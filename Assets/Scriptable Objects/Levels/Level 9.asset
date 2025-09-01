@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelPrefab: {fileID: 5804824860259324526, guid: e3657cf6ce3c5fd4698b8ada835985ee,
     type: 3}
+  spacing: 1.21
+  radius: 9.25
+  formation: 0
+  PositionOffset: {x: 1.81, y: -2.57}
+  EnemyCount: 58

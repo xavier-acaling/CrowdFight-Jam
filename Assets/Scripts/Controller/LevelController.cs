@@ -43,6 +43,7 @@ public class LevelController : MonoBehaviour
         {
             Destroy(CurrentLevelObject);
         }
+        BattleController.Instance.GameStarted = false;
         BlockManager.Instance.AllBlockCharacters.Clear();
         BlockManager.Instance.AllGridCells.Clear();
         LevelSO levelSO = Levels[CurrentLevel - 1];
