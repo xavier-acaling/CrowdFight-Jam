@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,10 +15,10 @@ public class LevelController : MonoBehaviour
     public event Action OnLevelUpdate;
     public Transform LevelContainer;
     public GameObject CurrentLevelObject;
-  
+    public int CurrentLevelIndex;
     void Start()
     {
-        OnLevelUpdate?.Invoke();
+        init();
     }
     void OnEnable()
     {
@@ -35,7 +36,30 @@ public class LevelController : MonoBehaviour
     }
     void init()
     {
-        
+        if (!string.IsNullOrEmpty(PlayerPrefs.GetString("data")))
+        {
+            string data = PlayerPrefs.GetString("data");
+            GameData gameData = JsonConvert.DeserializeObject<GameData>(data);
+            CurrentLevel = gameData.LevelCount;
+            CurrentLevelIndex = gameData.LevelIndex;
+        }
+        else
+        {
+            saveLevel();
+        }
+        OnLevelUpdate?.Invoke();
+    }
+    void saveLevel()
+    {
+        GameData gameData = new GameData
+        {
+            LevelCount = CurrentLevel,
+            LevelIndex = CurrentLevelIndex
+        };
+        string data = JsonConvert.SerializeObject(gameData);
+
+        PlayerPrefs.SetString("data", data);
+        PlayerPrefs.Save();
     }
     void spawnLevel()
     {
@@ -46,7 +70,10 @@ public class LevelController : MonoBehaviour
         BattleController.Instance.GameStarted = false;
         BlockManager.Instance.AllBlockCharacters.Clear();
         BlockManager.Instance.AllGridCells.Clear();
-        LevelSO levelSO = Levels[CurrentLevel - 1];
+
+        
+        LevelSO levelSO = Levels[CurrentLevelIndex];
+
         GameObject level = Instantiate(levelSO.LevelPrefab.gameObject, LevelContainer);
         CurrentLevelObject = level;
         BlockManager.Instance.InitializeAllBlockChildren();
@@ -60,7 +87,15 @@ public class LevelController : MonoBehaviour
     public void NextLevel()
     {
         CurrentLevel++;
-        CurrentLevel = Mathf.Clamp(CurrentLevel, 1, Levels.Count);
+        CurrentLevelIndex = 0;
+        CurrentLevelIndex = CurrentLevel - 1;
+        if (CurrentLevel > 14)
+        {
+            CurrentLevelIndex = UnityEngine.Random.Range(1, 15);
+            CurrentLevelIndex--;
+        }
+        saveLevel();
+        
         OnLevelUpdate?.Invoke();
     }
     [ContextMenu("PrevLevel")]
@@ -77,10 +112,10 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            PrevLevel();
-        }
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     PrevLevel();
+        // }
         if (Input.GetKeyDown(KeyCode.S))
         {
             RestartLevel();
